@@ -9,7 +9,9 @@ const main = async () => {
     update: {},
     create: {
       email: 'admin@admin.com',
-      CPF: await bcrypt.hash('000.000.000-00', 8),
+      password: await bcrypt.hash('Senha@123', 8),
+      name: 'Thiago Leite',
+      role: 'ADMIN',
     },
   });
 };
