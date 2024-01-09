@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { userService } from '../services/userService';
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
 import * as bcrypt from 'bcrypt';
+import { jwtService } from '../services/jwtService';
 
 export const adminRoutes = async (app: FastifyInstance) => {
   app.post('/login', async (req, rep) => {
@@ -16,7 +17,18 @@ export const adminRoutes = async (app: FastifyInstance) => {
         throw new ResourceNotFoundError('E-mail ou login não conferem.');
       }
 
-      return rep.send('ok');
+      const jwtPayload = {
+        email: user.email,
+        id: user.id,
+        name: user.name,
+        role: user.role,
+      };
+
+      const response = {
+        access_token: jwtService.signJWT(jwtPayload),
+      };
+
+      return rep.send(response);
     } catch (error) {
       if (error instanceof z.ZodError) {
         const errorJson = JSON.stringify(error);
