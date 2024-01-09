@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch src/server/server.ts",
@@ -14,8 +17,12 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/cors": "^8.5.0",
+    "@prisma/client": "^5.8.0",
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "fastify": "^4.25.2",
+    "prisma": "^5.8.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {
@@ -23,6 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
+    "ts-node": "^10.9.2",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"

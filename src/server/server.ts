@@ -1,5 +1,8 @@
 import { app } from '../app/app';
 import { env } from '../env';
+import prismaPlugin from '../plugins/prisma';
+
+app.register(prismaPlugin);
 
 app
   .listen({

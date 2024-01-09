@@ -1,6 +1,6 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
-import { adminRoutes } from './routes/AdminController';
+import { adminRoutes } from './routes/admin/AdminRoutes';
 import { healthRoutes } from './routes/Health';
 
 export const app = fastify();
