@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { userService } from '../services/userService';
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
 import * as bcrypt from 'bcrypt';
-import { jwtService } from '../services/jwtService';
 
 export const adminRoutes = async (app: FastifyInstance) => {
   app.post('/login', async (req, rep) => {
@@ -24,8 +23,10 @@ export const adminRoutes = async (app: FastifyInstance) => {
         role: user.role,
       };
 
+      const access_token = app.jwt.sign(jwtPayload, { expiresIn: '8 days' });
+
       const response = {
-        access_token: jwtService.signJWT(jwtPayload),
+        access_token,
       };
 
       return rep.send(response);
