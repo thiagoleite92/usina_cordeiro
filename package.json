@@ -7,7 +7,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest",
     "dev": "tsx watch src/server/server.ts",
     "build": "tsup src --out-dir dist",
     "start": "node dist/server/server.cjs"
@@ -31,9 +31,12 @@
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.1",
     "tsx": "^4.7.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vite-tsconfig-paths": "^4.2.3",
+    "vitest": "^1.1.3"
   }
 }
