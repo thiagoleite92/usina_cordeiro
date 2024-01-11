@@ -14,6 +14,17 @@ const main = async () => {
       role: 'ADMIN',
     },
   });
+
+  await prisma.user.upsert({
+    where: { email: 'residente@residente.com' },
+    update: {},
+    create: {
+      email: 'residente@residente.com',
+      password: await bcrypt.hash('Senha@123', 8),
+      name: 'Thiago Leite residente',
+      role: 'DWELLER',
+    },
+  });
 };
 
 main();

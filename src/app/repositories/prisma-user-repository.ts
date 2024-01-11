@@ -1,4 +1,4 @@
-import { UsersRepository } from './user-repository-interface';
+import { UsersRepository } from './interfaces/user-repository-interface';
 import { prisma } from '../lib/prisma';
 
 export class PrismaUsersRepository implements UsersRepository {
