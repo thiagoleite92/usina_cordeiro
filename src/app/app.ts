@@ -1,9 +1,10 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
+
 import { env } from '../env';
-import { adminRoutes } from './routes/AdminRoutes';
 import { healthRoutes } from './routes/Health';
+import { userRoutes } from './routes/UserRoutes';
 
 export const app = fastify();
 
@@ -19,6 +20,4 @@ app.register(healthRoutes, {
   prefix: '/api/health',
 });
 
-app.register(adminRoutes, {
-  prefix: '/api/admin',
-});
+app.register(userRoutes, { prefix: '/api' });

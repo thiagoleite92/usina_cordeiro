@@ -11,11 +11,29 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
+  id       String    @id @default(cuid())
+  email    String    @unique
   name     String
   password String
-  role     UserRole @default(DWELLER)
+  role     UserRole  @default(DWELLER)
+  Expenses Expense[]
+
+  @@map("users")
+}
+
+model Expense {
+  id          String   @id @default(cuid())
+  expense     String
+  value       Decimal
+  description String?
+  date        DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userId      String
+
+  user_id User @relation(fields: [userId], references: [id])
+
+  @@map("expenses")
 }
 
 enum UserRole {
