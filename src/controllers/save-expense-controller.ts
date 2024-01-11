@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
-import { makeSaveExpenseUseCase } from '../use-cases/factories/make-save-expense-use-case';
+import { makeSaveExpenseService } from '../services/factories/make-save-expense-service';
 
 export const saveExpense = async (req: FastifyRequest, rep: FastifyReply) => {
   const saveExpenseBodySchema = z.object({
@@ -14,7 +14,7 @@ export const saveExpense = async (req: FastifyRequest, rep: FastifyReply) => {
     req.body
   );
 
-  const saveExpenseUseCase = makeSaveExpenseUseCase();
+  const saveExpenseUseCase = makeSaveExpenseService();
 
   await saveExpenseUseCase.execute({
     expense,

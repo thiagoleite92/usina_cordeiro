@@ -1,6 +1,6 @@
 import { PrismaExpenseRepository } from '../repositories/prisma-expense-repository';
 
-type saveExpenseUseCaseRequest = {
+type saveExpenseServiceRequest = {
   expense: string;
   value: number;
   description: string | null;
@@ -8,10 +8,10 @@ type saveExpenseUseCaseRequest = {
   userId: string;
 };
 
-export class SaveExpenseUseCase {
+export class SaveExpenseService {
   constructor(private readonly expenseRepository: PrismaExpenseRepository) {}
 
-  async execute(expense: saveExpenseUseCaseRequest) {
+  async execute(expense: saveExpenseServiceRequest) {
     expense.date = new Date(expense.date);
 
     await this.expenseRepository.save(expense);
