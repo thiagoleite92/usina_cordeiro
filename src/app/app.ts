@@ -1,12 +1,11 @@
 import fastify from 'fastify';
 import cors from '@fastify/cors';
 import jwt from '@fastify/jwt';
-
-import { env } from '../env';
-import { healthRoutes } from './routes/Health';
-import { userRoutes } from './routes/UserRoutes';
 import { ZodError } from 'zod';
-import { UnauthorizedError } from './errors/UnauthorizedError';
+import { env } from '../env';
+import { healthRoutes } from '../routes/Health';
+import { userRoutes } from '../routes/UserRoutes';
+import { UnauthorizedError } from '../errors/UnauthorizedError';
 
 export const app = fastify();
 
