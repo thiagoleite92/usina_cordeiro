@@ -1,13 +1,37 @@
-import { saveExpenseDTO } from '../../services/dto/save-expense.dto';
+import { SaveExpenseDTO } from '../../services/dto/save-expense.dto';
 import { ExpenseRepositoryInterface } from '../interfaces/expense-repository-interface';
 import { Expense } from '@prisma/client';
 import { createId } from '@paralleldrive/cuid2';
 import { Decimal } from '@prisma/client/runtime/library';
+import { UpdateExpanseDTO } from '../../services/dto/update-expense.dto';
 
 export class InMemoryExpenseRepository implements ExpenseRepositoryInterface {
   public items: Array<Expense> = [];
 
-  async save(data: saveExpenseDTO): Promise<Expense> {
+  async update({
+    id,
+    date,
+    description,
+    expense,
+    value,
+  }: UpdateExpanseDTO): Promise<Expense | null> {
+    const foundExpense = this.items.find((item) => item.id === id);
+
+    if (!foundExpense) {
+      return null;
+    }
+
+    foundExpense.date = date ? date : foundExpense.date;
+    foundExpense.description = description
+      ? description
+      : foundExpense.description;
+    foundExpense.expense = expense ? expense : foundExpense.expense;
+    foundExpense.value = value ? new Decimal(value) : foundExpense.value;
+
+    return foundExpense;
+  }
+
+  async save(data: SaveExpenseDTO): Promise<Expense> {
     const expense: Expense = {
       id: createId(),
       expense: data.expense,

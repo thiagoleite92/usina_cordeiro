@@ -1,4 +1,4 @@
-export type saveExpenseDTO = {
+export type SaveExpenseDTO = {
   expense: string;
   value: number;
   description: string | null;

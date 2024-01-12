@@ -1,6 +1,8 @@
 import { Expense } from '@prisma/client';
-import { saveExpenseDTO } from '../../services/dto/save-expense.dto';
+import { SaveExpenseDTO } from '../../services/dto/save-expense.dto';
+import { UpdateExpanseDTO } from '../../services/dto/update-expense.dto';
 
 export interface ExpenseRepositoryInterface {
-  save(expense: saveExpenseDTO): Promise<Expense>;
+  save(expense: SaveExpenseDTO): Promise<Expense>;
+  update(expense: UpdateExpanseDTO): Promise<Expense | null>;
 }
