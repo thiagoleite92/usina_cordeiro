@@ -7,7 +7,9 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run --dir src/services",
+    "test:watch": "vitest run --dir src/services",
+    "test:coverage": "vitest run --coverage",
     "dev": "tsx watch src/server/server.ts",
     "build": "tsup src --out-dir dist",
     "start": "node dist/server/server.cjs"
@@ -29,8 +31,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.10.8",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
     "@typescript-eslint/parser": "^6.18.1",
+    "@vitest/coverage-v8": "^1.2.0",
     "eslint": "^8.56.0",
     "supertest": "^6.3.3",
     "ts-node": "^10.9.2",
