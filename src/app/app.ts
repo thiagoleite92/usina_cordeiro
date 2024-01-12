@@ -6,6 +6,7 @@ import { env } from '../env';
 import { healthRoutes } from '../routes/Health';
 import { userRoutes } from '../routes/UserRoutes';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
+import { authRoute } from '../routes/AuthRoute';
 
 export const app = fastify();
 
@@ -21,6 +22,7 @@ app.register(healthRoutes, {
   prefix: '/api/health',
 });
 
+app.register(authRoute, { prefix: '/api' });
 app.register(userRoutes, { prefix: '/api' });
 
 app.setErrorHandler((error, _, reply) => {
@@ -37,8 +39,6 @@ app.setErrorHandler((error, _, reply) => {
   if (error instanceof UnauthorizedError) {
     return reply.status(401).send({ message: error.message });
   }
-
-  console.log(error);
 
   return reply.status(500).send({ message: 'Internal Server Error' });
 });
