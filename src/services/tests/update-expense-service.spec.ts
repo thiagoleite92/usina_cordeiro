@@ -43,7 +43,7 @@ describe('Service => Update Expense', () => {
     expect(result?.value.toNumber()).toEqual(newData.value);
   });
 
-  it('should be able to update an expense with that was not found', async () => {
+  it('should not be able to update an expense that was not found', async () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',

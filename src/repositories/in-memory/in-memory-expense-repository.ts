@@ -8,13 +8,7 @@ import { UpdateExpanseDTO } from '../../services/dto/update-expense.dto';
 export class InMemoryExpenseRepository implements ExpenseRepositoryInterface {
   public items: Array<Expense> = [];
 
-  async update({
-    id,
-    date,
-    description,
-    expense,
-    value,
-  }: UpdateExpanseDTO): Promise<Expense | null> {
+  async update({ id, date, description, expense, value }: UpdateExpanseDTO) {
     const foundExpense = this.items.find((item) => item.id === id);
 
     if (!foundExpense) {
@@ -31,7 +25,7 @@ export class InMemoryExpenseRepository implements ExpenseRepositoryInterface {
     return foundExpense;
   }
 
-  async save(data: SaveExpenseDTO): Promise<Expense> {
+  async save(data: SaveExpenseDTO) {
     const expense: Expense = {
       id: createId(),
       expense: data.expense,
@@ -46,5 +40,11 @@ export class InMemoryExpenseRepository implements ExpenseRepositoryInterface {
     this.items.push(expense);
 
     return expense;
+  }
+
+  async findById(id: string) {
+    const foundExpense = this.items.find((item) => item.id === id);
+
+    return foundExpense ? foundExpense : null;
   }
 }

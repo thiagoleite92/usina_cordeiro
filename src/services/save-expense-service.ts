@@ -1,5 +1,5 @@
 import { Expense } from '@prisma/client';
-import { PrismaExpenseRepository } from '../repositories/prisma-expense-repository';
+import { ExpenseRepositoryInterface } from '../repositories/interfaces/expense-repository-interface';
 
 type saveExpenseServiceRequest = {
   expense: string;
@@ -10,12 +10,15 @@ type saveExpenseServiceRequest = {
 };
 
 export class SaveExpenseService {
-  constructor(private readonly expenseRepository: PrismaExpenseRepository) {}
+  constructor(private readonly expenseRepository: ExpenseRepositoryInterface) {}
 
   async execute(expense: saveExpenseServiceRequest): Promise<Expense> {
-    expense.date = new Date(expense.date).toISOString();
+    const data = {
+      ...expense,
+      date: new Date(expense.date),
+    };
 
-    const result = await this.expenseRepository.save(expense);
+    const result = await this.expenseRepository.save(data);
 
     return result;
   }

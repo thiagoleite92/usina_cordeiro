@@ -5,4 +5,5 @@ import { UpdateExpanseDTO } from '../../services/dto/update-expense.dto';
 export interface ExpenseRepositoryInterface {
   save(expense: SaveExpenseDTO): Promise<Expense>;
   update(expense: UpdateExpanseDTO): Promise<Expense | null>;
+  findById(id: string): Promise<Expense | null>;
 }
