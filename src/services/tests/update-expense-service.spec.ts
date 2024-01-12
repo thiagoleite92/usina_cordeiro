@@ -63,11 +63,11 @@ describe('Service => Update Expense', () => {
 
     await expenseRepository.save(data);
 
-    await expect(() => {
+    await expect(() =>
       sut.execute({
         ...newData,
         id: createId(),
-      });
-    }).rejects.toBeInstanceOf(ResourceNotFoundError);
+      })
+    ).rejects.toBeInstanceOf(ResourceNotFoundError);
   });
 });
