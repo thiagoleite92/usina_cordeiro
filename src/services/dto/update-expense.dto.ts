@@ -1,3 +1,7 @@
 import { SaveExpenseDTO } from './save-expense.dto';
 
-export type UpdateExpanseDTO = Partial<SaveExpenseDTO> & { id: string };
+export type UpdateExpanseDTO = Partial<SaveExpenseDTO> & {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+};

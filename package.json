@@ -7,7 +7,7 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "scripts": {
-    "test": "vitest run -c vitest.unit.config.ts",
+    "test": "vitest --dir src/services -c vitest.unit.config.ts",
     "test:watch": "vitest run -c vitest.unit.config.ts",
     "test:e2e": "vitest run -c vitest.e2e.config.ts",
     "test:e2e:watch": "vitest -c vitest.e2e.config.ts",
