@@ -24,5 +24,5 @@ export const saveExpense = async (req: FastifyRequest, rep: FastifyReply) => {
     userId: req?.user?.sub,
   });
 
-  return rep.status(200).send({ message: 'ok' });
+  return rep.status(201).send({ message: 'ok' });
 };
