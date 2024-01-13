@@ -25,5 +25,5 @@ export const updateExpense = async (req: FastifyRequest, rep: FastifyReply) => {
     id,
   });
 
-  return rep.status(201).send({ message: 'ok' });
+  return rep.status(202).send({ message: 'ok' });
 };

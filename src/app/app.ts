@@ -4,7 +4,7 @@ import jwt from '@fastify/jwt';
 import { ZodError } from 'zod';
 import { env } from '../env';
 import { healthRoutes } from '../routes/Health';
-import { userRoutes } from '../routes/UserRoutes';
+import { expenseRoutes } from '../routes/ExpenseRoutes';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { authRoute } from '../routes/AuthRoute';
 
@@ -23,7 +23,7 @@ app.register(healthRoutes, {
 });
 
 app.register(authRoute, { prefix: '/api' });
-app.register(userRoutes, { prefix: '/api' });
+app.register(expenseRoutes, { prefix: '/api' });
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {

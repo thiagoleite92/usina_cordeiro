@@ -1,8 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import request from 'supertest';
 import { app } from '../../app/app';
-import { createAndAuthenticateUser } from '../../utils/tests/create-authenticated-user';
 import { prisma } from '../../lib/prisma';
+import { createAndAuthenticateAdmin } from '../../utils/tests/create-authenticated-user';
 
 describe('e2e => Save Expense', () => {
   beforeAll(async () => {
@@ -18,7 +18,10 @@ describe('e2e => Save Expense', () => {
   });
 
   it('[POST] /save-expense should save by admin', async () => {
-    const { access_token, userId } = await createAndAuthenticateUser(app, true);
+    const { access_token, userId } = await createAndAuthenticateAdmin(
+      app,
+      true
+    );
 
     const result = await request(app.server)
       .post('/api/save-expense')
@@ -38,7 +41,7 @@ describe('e2e => Save Expense', () => {
   });
 
   it('[POST] /save-expense should not save by not-admin', async () => {
-    const { access_token, userId } = await createAndAuthenticateUser(app);
+    const { access_token, userId } = await createAndAuthenticateAdmin(app);
 
     const result = await request(app.server)
       .post('/api/save-expense')
