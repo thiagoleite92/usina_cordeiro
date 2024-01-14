@@ -40,7 +40,7 @@ describe('e2e => authenticate', () => {
     await app.close();
   });
 
-  it('should be able to authenticate', async () => {
+  it('[POST] /api/auth should authenticate', async () => {
     const response = await request(app.server)
       .post('/api/auth')
       .send({ email: 'teste@teste.com', password: 'Senha@123' });
@@ -49,7 +49,7 @@ describe('e2e => authenticate', () => {
     expect(response.body).toEqual({ access_token: expect.any(String) });
   });
 
-  it('should not be able to authenticate  with wrong password', async () => {
+  it('[POST] /api/auth should not authenticate auth with wrong password', async () => {
     const response = await request(app.server)
       .post('/api/auth')
       .send({ email: 'teste@teste.com', password: 'SenhaErrada' });
@@ -58,7 +58,7 @@ describe('e2e => authenticate', () => {
     expect(response.body.message).toEqual('Credenciais não conferem');
   });
 
-  it('should not be able to authenticate  with wrong email', async () => {
+  it('[POST] /api/auth should not authenticate with wrong email', async () => {
     const response = await request(app.server)
       .post('/api/auth')
       .send({ email: 'email@errado.com', password: 'Senha@123' });

@@ -17,14 +17,14 @@ describe('e2e => Save Expense', () => {
     await app.close();
   });
 
-  it('[POST] /save-expense should save by admin', async () => {
+  it('[POST] /expense should save by admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(
       app,
       true
     );
 
     const result = await request(app.server)
-      .post('/api/save-expense')
+      .post('/api/expense')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
@@ -40,11 +40,11 @@ describe('e2e => Save Expense', () => {
     expect(expense).toHaveLength(1);
   });
 
-  it('[POST] /save-expense should not save by not-admin', async () => {
+  it('[POST] /expense should not save by not-admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(app);
 
     const result = await request(app.server)
-      .post('/api/save-expense')
+      .post('/api/expense')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',

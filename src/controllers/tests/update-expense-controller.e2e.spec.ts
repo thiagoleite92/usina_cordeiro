@@ -20,14 +20,14 @@ describe('e2e => Update Expense', () => {
     await app.close();
   });
 
-  it('[POST] /update-expense should update by admin', async () => {
+  it('[PUT] /update-expense should update by admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(
       app,
       true
     );
 
     await request(app.server)
-      .post('/api/save-expense')
+      .post('/api/expense')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
@@ -41,7 +41,7 @@ describe('e2e => Update Expense', () => {
     expect(createdExpense).toHaveLength(1);
 
     const response = await request(app.server)
-      .post('/api/update-expense')
+      .put('/api/expense')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/02/2023',
@@ -61,12 +61,12 @@ describe('e2e => Update Expense', () => {
     expect(updatedExpense).toHaveLength(1);
   });
 
-  it('[POST] /update-expense should not update by not-admin', async () => {
+  it('[PUT] /update-expense should not update by not-admin', async () => {
     const admin = await createAndAuthenticateAdmin(app, true);
     const dweller = await createAndAuthenticateDweller(app, false);
 
     await request(app.server)
-      .post('/api/save-expense')
+      .post('/api/expense')
       .set('Authorization', 'Bearer ' + admin.access_token)
       .send({
         date: '01/01/2023',
@@ -77,7 +77,7 @@ describe('e2e => Update Expense', () => {
       });
 
     const response = await request(app.server)
-      .post('/api/update-expense')
+      .put('/api/expense')
       .set('Authorization', 'Bearer ' + dweller.access_token)
       .send({
         date: '01/01/2023',
