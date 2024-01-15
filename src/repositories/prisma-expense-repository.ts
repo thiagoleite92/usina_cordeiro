@@ -18,4 +18,13 @@ export class PrismaExpenseRepository implements ExpenseRepositoryInterface {
   async findById(id: string) {
     return await prisma.expense.findUnique({ where: { id } });
   }
+
+  async delete(id: string) {
+    await prisma.expense.delete({ where: { id } });
+    return;
+  }
+
+  async getItems() {
+    return prisma.expense.findMany();
+  }
 }

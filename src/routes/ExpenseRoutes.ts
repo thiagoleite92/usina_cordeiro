@@ -4,6 +4,7 @@ import { verifyJWT } from '../middlewares/verify-jwt';
 import { verifyUserRole } from '../middlewares/verify-user-role';
 import { updateExpense } from '../controllers/update-expense-controller';
 import { getExpenseById } from '../controllers/get-expense-by-id-controller';
+import { deleteExpense } from '../controllers/delete-expense-controller';
 
 export const expenseRoutes = async (app: FastifyInstance) => {
   app.get('/expense/:expenseId', { preHandler: verifyJWT }, getExpenseById);
@@ -17,5 +18,11 @@ export const expenseRoutes = async (app: FastifyInstance) => {
     '/expense',
     { preHandler: [verifyJWT, verifyUserRole('ADMIN')] },
     updateExpense
+  );
+
+  app.delete(
+    '/expense/:expenseId',
+    { preHandler: [verifyJWT, verifyUserRole('ADMIN')] },
+    deleteExpense
   );
 };

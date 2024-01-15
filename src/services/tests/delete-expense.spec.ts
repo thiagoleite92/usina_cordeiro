@@ -1,17 +1,17 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { InMemoryExpenseRepository } from '../../repositories/in-memory/in-memory-expense-repository';
-import { DeleteExpenseBy } from '../delete-expense';
+import { DeleteExpenseService } from '../delete-expense-service';
 import { ExpenseRepositoryInterface } from '../../repositories/interfaces/expense-repository-interface';
 import { ResourceNotFoundError } from '../../errors/ResourceNotFoundError';
 import { createId } from '@paralleldrive/cuid2';
 
 let expenseRepository: ExpenseRepositoryInterface;
-let sut: DeleteExpenseBy;
+let sut: DeleteExpenseService;
 
 describe('Service => delete expense by id', () => {
   beforeEach(() => {
     expenseRepository = new InMemoryExpenseRepository();
-    sut = new DeleteExpenseBy(expenseRepository);
+    sut = new DeleteExpenseService(expenseRepository);
   });
 
   it('should be able to return a expense if it exists', async () => {

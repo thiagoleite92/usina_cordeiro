@@ -6,6 +6,6 @@ export const verifyUserRole =
     const { role } = req.user;
 
     if (role !== roleToVerify) {
-      return rep.status(401).send({ message: 'Unauthorized' });
+      return rep.status(401).send({ message: 'Não Autorizado' });
     }
   };
