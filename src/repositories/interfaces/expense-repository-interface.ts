@@ -6,4 +6,6 @@ export interface ExpenseRepositoryInterface {
   save(expense: SaveExpenseDTO): Promise<Expense>;
   update(expense: UpdateExpanseDTO): Promise<Expense | null>;
   findById(id: string): Promise<Expense | null>;
+  delete(id: string): Promise<void>;
+  getItems(): Promise<Expense[]>;
 }

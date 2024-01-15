@@ -47,4 +47,18 @@ export class InMemoryExpenseRepository implements ExpenseRepositoryInterface {
 
     return foundExpense ? foundExpense : null;
   }
+
+  async delete(id: string) {
+    const expenseIndex = this.items.findIndex((item) => item.id === id);
+
+    if (expenseIndex === -1) {
+      return;
+    }
+
+    this.items.splice(expenseIndex, 1);
+  }
+
+  async getItems() {
+    return this.items;
+  }
 }

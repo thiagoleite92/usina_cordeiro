@@ -1,18 +1,18 @@
-import { Expense } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
 import { ExpenseRepositoryInterface } from '../repositories/interfaces/expense-repository-interface';
 
-export class FindExpenseByIdService {
+export class DeleteExpenseBy {
   constructor(private readonly expenseRepository: ExpenseRepositoryInterface) {}
 
-  async execute(id: string): Promise<Expense> {
+  async execute(id: string): Promise<void> {
     const expense = await this.expenseRepository.findById(id);
 
+    console.log(expense);
+
     if (!expense) {
-      console.log('oi');
       throw new ResourceNotFoundError('Despesa não encontrada');
     }
 
-    return expense;
+    await this.expenseRepository.delete(id);
   }
 }
