@@ -37,14 +37,15 @@ describe('e2e => Get Expense By Id', () => {
       .get(`/api/expense/${createdExpense[0].id}`)
       .set('Authorization', 'Bearer ' + access_token);
 
-    const {
-      body: { expense },
-    } = response;
+    expect(response.statusCode).toEqual(200);
 
-    expect(expense).toBeDefined();
-    expect(expense.value).toEqual('19.99');
-    expect(expense.expense).toEqual('Serviço');
-    expect(expense.description).toEqual('');
-    expect(expense.date).toEqual(new Date('01/01/2023').toISOString());
+    expect(response.body.expense).toBeDefined();
+    expect(response.body).toEqual({
+      expense: expect.objectContaining({
+        expense: 'Serviço',
+        date: new Date('01/01/2023').toISOString(),
+        value: '19.99',
+      }),
+    });
   });
 });
