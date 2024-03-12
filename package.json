@@ -17,7 +17,12 @@
     "pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
     "dev": "tsx watch src/server/server.ts",
     "build": "tsup src --out-dir dist",
-    "start": "node dist/server/server.cjs"
+    "start": "node dist/server/server.js",
+    "db:push": "prisma db push",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:seed": "prisma db seed",
+    "build:server": "npm install && npm run build && npx prisma migrate deploy && npx prisma db seed"
   },
   "keywords": [],
   "author": "",
