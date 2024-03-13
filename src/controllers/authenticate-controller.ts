@@ -9,7 +9,7 @@ export const authenticate = async (req: FastifyRequest, rep: FastifyReply) => {
     password: z.string().min(6),
   });
 
-  const { email, password } = authenticateBodySchema.parse(req.body);
+  const { email, password } = authenticateBodySchema.parse(req?.body);
 
   try {
     const authenticateService = makeAuthenticateService();

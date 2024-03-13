@@ -7,6 +7,7 @@ import { healthRoutes } from '../routes/Health';
 import { expenseRoutes } from '../routes/ExpenseRoutes';
 import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { authRoute } from '../routes/AuthRoute';
+import { userRoutes } from '../routes/UserRoutes';
 
 export const app = fastify();
 
@@ -24,6 +25,7 @@ app.register(healthRoutes, {
 
 app.register(authRoute, { prefix: '/api' });
 app.register(expenseRoutes, { prefix: '/api' });
+app.register(userRoutes, { prefix: '/api' });
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
