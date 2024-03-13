@@ -14,6 +14,7 @@ describe('e2e => Update Expense', () => {
 
   afterEach(async () => {
     await prisma.user.deleteMany({});
+    await prisma.expense.deleteMany({});
   });
 
   afterAll(async () => {

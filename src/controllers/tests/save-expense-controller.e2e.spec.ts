@@ -11,6 +11,7 @@ describe('e2e => Save Expense', () => {
 
   afterEach(async () => {
     await prisma.user.deleteMany({});
+    await prisma.expense.deleteMany({});
   });
 
   afterAll(async () => {
@@ -49,7 +50,7 @@ describe('e2e => Save Expense', () => {
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Serviço',
+        expense: 'Teste',
         userId,
         value: 19.99,
       });
