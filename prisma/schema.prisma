@@ -11,32 +11,38 @@ datasource db {
 }
 
 model User {
-  id       String    @id @default(cuid())
-  email    String    @unique
-  name     String
-  password String
-  role     UserRole  @default(DWELLER)
-  Expenses Expense[]
+  id           String        @id @default(cuid())
+  email        String        @unique
+  name         String
+  password     String
+  role         UserRole      @default(DWELLER)
+  Installments Installment[]
 
   @@map("users")
 }
 
-model Expense {
-  id          String   @id @default(cuid())
-  expense     String
+model Installment {
+  id          String          @id @default(cuid())
+  installment String
   value       Decimal
   description String?
   date        DateTime
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  userId      String?  @map("user_id")
+  type        InstallmentEnum @default(OUTCOME)
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+  userId      String?         @map("user_id")
 
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: NoAction)
 
-  @@map("expenses")
+  @@map("installments")
 }
 
 enum UserRole {
   ADMIN
   DWELLER
+}
+
+enum InstallmentEnum {
+  INCOME
+  OUTCOME
 }

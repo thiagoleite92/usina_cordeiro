@@ -1,23 +1,24 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { InMemoryExpenseRepository } from '../../repositories/in-memory/in-memory-expense-repository';
-import { UpdateExpenseService } from '../update-expense-service';
+import { InMemoryInstallmentRepository } from '../../repositories/in-memory/in-memory-installment-repository';
 import { createId } from '@paralleldrive/cuid2';
 import { ResourceNotFoundError } from '../../errors/ResourceNotFoundError';
+import { UpdateInstallmentService } from '../update-installment-service';
+import { InstallmentEnum } from '@prisma/client';
 
-let expenseRepository: InMemoryExpenseRepository;
-let sut: UpdateExpenseService;
+let installmentRepository: InMemoryInstallmentRepository;
+let sut: UpdateInstallmentService;
 
-describe('Service => Update Expense', () => {
+describe('Service => Update Installment', () => {
   beforeEach(() => {
-    expenseRepository = new InMemoryExpenseRepository();
-    sut = new UpdateExpenseService(expenseRepository);
+    installmentRepository = new InMemoryInstallmentRepository();
+    sut = new UpdateInstallmentService(installmentRepository);
   });
 
-  it('should be able to update an expense', async () => {
+  it('should be able to update an installment', async () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',
-      expense: 'Serviço',
+      installment: 'Serviço',
       userId: createId(),
       value: 19.99,
     };
@@ -25,13 +26,14 @@ describe('Service => Update Expense', () => {
     const newData = {
       date: new Date('01/01/2023'),
       description: 'atualizado',
-      expense: 'Despesa',
+      installment: 'Despesa',
       userId: createId(),
       value: 12.99,
+      type: InstallmentEnum.INCOME,
       updatedAt: new Date('02/01/2023'),
     };
 
-    const { id } = await expenseRepository.save(data);
+    const { id } = await installmentRepository.save(data);
 
     const result = await sut.execute({
       ...newData,
@@ -39,15 +41,15 @@ describe('Service => Update Expense', () => {
     });
 
     expect(result?.description).toEqual(newData.description);
-    expect(result?.expense).toEqual(newData.expense);
+    expect(result?.installment).toEqual(newData.installment);
     expect(result?.value.toNumber()).toEqual(newData.value);
   });
 
-  it('should not be able to update an expense that was not found', async () => {
+  it('should not be able to update an installment that was not found', async () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',
-      expense: 'Serviço',
+      installment: 'Serviço',
       userId: createId(),
       value: 19.99,
     };
@@ -55,13 +57,14 @@ describe('Service => Update Expense', () => {
     const newData = {
       date: new Date('01/01/2023'),
       description: 'atualizado',
-      expense: 'Despesa',
+      installment: 'Despesa',
       userId: createId(),
       value: 12.99,
+      type: InstallmentEnum.OUTCOME,
       updatedAt: new Date('02/01/2023'),
     };
 
-    await expenseRepository.save(data);
+    await installmentRepository.save(data);
 
     await expect(() =>
       sut.execute({

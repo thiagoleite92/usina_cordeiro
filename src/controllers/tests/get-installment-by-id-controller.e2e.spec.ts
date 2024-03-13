@@ -4,7 +4,7 @@ import { app } from '../../app/app';
 import { createAndAuthenticateAdmin } from '../../utils/tests/create-authenticated-user';
 import { prisma } from '../../lib/prisma';
 
-describe('e2e => Get Expense By Id', () => {
+describe('e2e => Get Installment By Id', () => {
   beforeAll(async () => {
     await app.ready();
   });
@@ -13,36 +13,37 @@ describe('e2e => Get Expense By Id', () => {
     await app.close();
   });
 
-  it('[GET] /expense/:expenseId', async () => {
+  it('[GET] /installment/:installmentId', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(
       app,
       true
     );
 
     await request(app.server)
-      .post('/api/expense')
+      .post('/api/installment')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Serviço',
+        installment: 'Serviço',
         userId,
         value: 19.99,
+        type: 'INCOME',
       });
 
-    const createdExpense = await prisma.expense.findMany();
-    expect(createdExpense).toHaveLength(1);
+    const createdInstallment = await prisma.installment.findMany();
+    expect(createdInstallment).toHaveLength(1);
 
     const response = await request(app.server)
-      .get(`/api/expense/${createdExpense[0].id}`)
+      .get(`/api/installment/${createdInstallment[0].id}`)
       .set('Authorization', 'Bearer ' + access_token);
 
     expect(response.statusCode).toEqual(200);
 
-    expect(response.body.expense).toBeDefined();
+    expect(response.body.installment).toBeDefined();
     expect(response.body).toEqual({
-      expense: expect.objectContaining({
-        expense: 'Serviço',
+      installment: expect.objectContaining({
+        installment: 'Serviço',
         date: new Date('01/01/2023').toISOString(),
         value: '19.99',
       }),

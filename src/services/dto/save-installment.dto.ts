@@ -1,5 +1,5 @@
-export type SaveExpenseDTO = {
-  expense: string;
+export type SaveInstallmentDTO = {
+  installment: string;
   value: number;
   description: string | null;
   date: Date;

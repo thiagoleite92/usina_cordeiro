@@ -4,60 +4,62 @@ import { app } from '../../app/app';
 import { prisma } from '../../lib/prisma';
 import { createAndAuthenticateAdmin } from '../../utils/tests/create-authenticated-user';
 
-describe('e2e => Save Expense', () => {
+describe('e2e => Save Installment', () => {
   beforeAll(async () => {
     await app.ready();
   });
 
   afterEach(async () => {
     await prisma.user.deleteMany({});
-    await prisma.expense.deleteMany({});
+    await prisma.installment.deleteMany({});
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  it('[POST] /expense should save by admin', async () => {
+  it('[POST] /installment should save by admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(
       app,
       true
     );
 
     const result = await request(app.server)
-      .post('/api/expense')
+      .post('/api/installment')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Serviço',
+        installment: 'Serviço',
         userId,
         value: 19.99,
+        type: 'INCOME',
       });
 
-    const expense = await prisma.expense.findMany();
+    const installment = await prisma.installment.findMany();
 
     expect(result.statusCode).toEqual(201);
-    expect(expense).toHaveLength(1);
+    expect(installment).toHaveLength(1);
   });
 
-  it('[POST] /expense should not save by not-admin', async () => {
+  it('[POST] /installment should not save by not-admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(app);
 
     const result = await request(app.server)
-      .post('/api/expense')
+      .post('/api/installment')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Teste',
+        installment: 'Teste',
         userId,
         value: 19.99,
+        type: 'INCOME',
       });
 
-    const expense = await prisma.expense.findMany();
+    const installment = await prisma.installment.findMany();
 
     expect(result.statusCode).toEqual(401);
-    expect(expense).toHaveLength(0);
+    expect(installment).toHaveLength(0);
   });
 });

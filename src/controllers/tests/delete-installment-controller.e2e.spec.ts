@@ -7,7 +7,7 @@ import {
 } from '../../utils/tests/create-authenticated-user';
 import { prisma } from '../../lib/prisma';
 
-describe('e2e => Delete Expense Controller', async () => {
+describe('e2e => Delete Installment Controller', async () => {
   beforeAll(async () => {
     await app.ready();
   });
@@ -20,38 +20,39 @@ describe('e2e => Delete Expense Controller', async () => {
     await app.close();
   });
 
-  it('[DELETE] /api/expense should delete expense by admin', async () => {
+  it('[DELETE] /api/installment should delete installment by admin', async () => {
     const { access_token, userId } = await createAndAuthenticateAdmin(
       app,
       true
     );
 
     await request(app.server)
-      .post('/api/expense')
+      .post('/api/installment')
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Serviço',
+        installment: 'Serviço',
         userId,
         value: 19.99,
+        type: 'INCOME',
       });
 
-    const createdExpenseBefore = await prisma.expense.findMany();
-    expect(createdExpenseBefore).toHaveLength(1);
+    const createdInstallmentBefore = await prisma.installment.findMany();
+    expect(createdInstallmentBefore).toHaveLength(1);
 
     const response = await request(app.server)
-      .delete(`/api/expense/${createdExpenseBefore[0].id}`)
+      .delete(`/api/installment/${createdInstallmentBefore[0].id}`)
       .set('Authorization', 'Bearer ' + access_token);
 
     expect(response.statusCode).toEqual(202);
     expect(response.body).toEqual({});
 
-    const createdExpenseAfter = await prisma.expense.findMany();
-    expect(createdExpenseAfter).toHaveLength(0);
+    const createdInstallmentAfter = await prisma.installment.findMany();
+    expect(createdInstallmentAfter).toHaveLength(0);
   });
 
-  it('[DELETE] /api/expense should not delete expense by dweller', async () => {
+  it('[DELETE] /api/installment should not delete installment by dweller', async () => {
     const { access_token: admin_token, userId: adminId } =
       await createAndAuthenticateAdmin(app, true);
 
@@ -60,27 +61,28 @@ describe('e2e => Delete Expense Controller', async () => {
     );
 
     await request(app.server)
-      .post('/api/expense')
+      .post('/api/installment')
       .set('Authorization', 'Bearer ' + admin_token)
       .send({
         date: '01/01/2023',
         description: '',
-        expense: 'Serviço',
+        installment: 'Serviço',
         userId: adminId,
         value: 19.99,
+        type: 'INCOME',
       });
 
-    const createdExpenseBefore = await prisma.expense.findMany();
-    expect(createdExpenseBefore).toHaveLength(1);
+    const createdInstallmentBefore = await prisma.installment.findMany();
+    expect(createdInstallmentBefore).toHaveLength(1);
 
     const response = await request(app.server)
-      .delete(`/api/expense/${createdExpenseBefore[0].id}`)
+      .delete(`/api/installment/${createdInstallmentBefore[0].id}`)
       .set('Authorization', 'Bearer ' + dweller_token);
 
     expect(response.statusCode).toEqual(401);
     expect(response.body.message).toEqual('Não Autorizado');
 
-    const createdExpenseAfter = await prisma.expense.findMany();
-    expect(createdExpenseAfter).toHaveLength(1);
+    const createdInstallmentAfter = await prisma.installment.findMany();
+    expect(createdInstallmentAfter).toHaveLength(1);
   });
 });
