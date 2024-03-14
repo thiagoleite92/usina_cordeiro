@@ -24,10 +24,10 @@ model User {
 model Installment {
   id          String          @id @default(cuid())
   installment String
-  value       Decimal
+  value       Int
   description String?
   date        DateTime
-  type        InstallmentEnum @default(OUTCOME)
+  type        InstallmentEnum @default(INCOME)
   createdAt   DateTime        @default(now()) @map("created_at")
   updatedAt   DateTime        @updatedAt @map("updated_at")
   userId      String?         @map("user_id")

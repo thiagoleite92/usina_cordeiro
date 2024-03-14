@@ -7,9 +7,9 @@ export const saveInstallment = async (
   rep: FastifyReply
 ) => {
   const saveInstallmentBodySchema = z.object({
-    installment: z.string().min(1, 'Campo obrigatório'),
-    value: z.number(),
     description: z.string().nullable(),
+    value: z.number(),
+    installment: z.string().min(1, 'Campo obrigatório'),
     date: z.string(),
     type: z.enum(['INCOME', 'OUTCOME']),
   });
@@ -19,7 +19,7 @@ export const saveInstallment = async (
 
   const saveInstallmentUseCase = makeSaveInstallmentService();
 
-  await saveInstallmentUseCase.execute({
+  const result = await saveInstallmentUseCase.execute({
     installment,
     value,
     description,
@@ -27,5 +27,5 @@ export const saveInstallment = async (
     userId: req?.user?.sub,
   });
 
-  return rep.status(201).send({ message: 'ok' });
+  return rep.status(201).send({ installment: result });
 };

@@ -1,6 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { SaveInstallmentDTO } from '../services/dto/save-installment.dto';
 import { UpdateInstallmentDTO } from '../services/dto/update-installment.dto';
+import { findAllInstallmentsRequest } from '../services/find-all-installments-service';
 import { InstallmentRepositoryInterface } from './interfaces/installment-repository-interface';
 
 export class PrismaInstallmentRepository
@@ -27,5 +28,10 @@ export class PrismaInstallmentRepository
 
   async getItems() {
     return prisma.installment.findMany();
+  }
+
+  async findAllInstallments(query?: findAllInstallmentsRequest) {
+    console.log(query);
+    return prisma.installment.findMany({});
   }
 }

@@ -5,8 +5,11 @@ import { verifyUserRole } from '../middlewares/verify-user-role';
 import { updateInstallment } from '../controllers/update-installment-controller';
 import { getInstallmentById } from '../controllers/get-installment-by-id-controller';
 import { deleteInstallment } from '../controllers/delete-installment-controller';
+import { findAllInstallments } from '../controllers/find-all-installments-controller';
 
 export const installmentRoutes = async (app: FastifyInstance) => {
+  app.get('/installment', { preHandler: verifyJWT }, findAllInstallments);
+
   app.get(
     '/installment/:installmentId',
     { preHandler: verifyJWT },
