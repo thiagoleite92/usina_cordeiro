@@ -9,13 +9,21 @@ export const findAllInstallments = async (
 ): Promise<Installment> => {
   const findAllInstallmentsQuerySchema = z.object({
     search: z.optional(z.string()),
+    page: z.optional(z.coerce.number().default(1)),
+    perPage: z.optional(z.coerce.number().default(10)),
   });
 
-  const { search } = findAllInstallmentsQuerySchema.parse(req.query);
+  const { search, page, perPage } = findAllInstallmentsQuerySchema.parse(
+    req.query
+  );
 
   const findallinstallmentsService = makeFindAllInstallments();
 
-  const installments = await findallinstallmentsService.execute({ search });
+  const installments = await findallinstallmentsService.execute({
+    search,
+    perPage,
+    page,
+  });
 
   return rep.status(200).send({ installments });
 };

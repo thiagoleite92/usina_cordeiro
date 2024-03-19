@@ -14,7 +14,7 @@ export const saveInstallment = async (
     type: z.enum(['INCOME', 'OUTCOME']),
   });
 
-  const { installment, value, description, date } =
+  const { installment, value, description, date, type } =
     saveInstallmentBodySchema.parse(req.body);
 
   const saveInstallmentUseCase = makeSaveInstallmentService();
@@ -24,6 +24,7 @@ export const saveInstallment = async (
     value,
     description,
     date,
+    type,
     userId: req?.user?.sub,
   });
 

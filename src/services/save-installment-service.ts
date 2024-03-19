@@ -1,4 +1,4 @@
-import { Installment } from '@prisma/client';
+import { Installment, InstallmentEnum } from '@prisma/client';
 import { InstallmentRepositoryInterface } from '../repositories/interfaces/installment-repository-interface';
 
 type saveInstallmentServiceRequest = {
@@ -7,6 +7,7 @@ type saveInstallmentServiceRequest = {
   description: string | null;
   date: string;
   userId: string;
+  type: InstallmentEnum;
 };
 
 export class SaveInstallmentService {

@@ -3,6 +3,8 @@ import { InstallmentRepositoryInterface } from '../repositories/interfaces/insta
 
 export type findAllInstallmentsRequest = {
   search?: string;
+  perPage?: number;
+  page?: number;
 };
 
 export class FindAllInstallmentsService {
@@ -12,9 +14,13 @@ export class FindAllInstallmentsService {
 
   async execute({
     search,
+    perPage,
+    page,
   }: findAllInstallmentsRequest): Promise<Installment[]> {
     const installments = await this.installmentsRepository.findAllInstallments({
       search,
+      perPage,
+      page,
     });
 
     return installments;

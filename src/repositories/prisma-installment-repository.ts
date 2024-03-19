@@ -30,8 +30,23 @@ export class PrismaInstallmentRepository
     return prisma.installment.findMany();
   }
 
-  async findAllInstallments(query?: findAllInstallmentsRequest) {
-    console.log(query);
-    return prisma.installment.findMany({});
+  async findAllInstallments({
+    perPage = 10,
+    search,
+    page = 1,
+  }: findAllInstallmentsRequest) {
+    return prisma.installment.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      where: {
+        OR: [
+          { installment: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+        ],
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+    });
   }
 }
