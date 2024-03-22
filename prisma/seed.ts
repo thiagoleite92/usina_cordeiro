@@ -1,6 +1,17 @@
 import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
+const categories = [
+  'Taxas Condominiais',
+  'Atrasadas',
+  'Recuperadas',
+  'Área de Lazer',
+  'Encargos Sociais',
+  'Despesas Ordinárias',
+  'Tarifas Bancárias',
+  'Despesas Extraordinárias',
+];
+
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -25,6 +36,16 @@ const main = async () => {
       role: 'DWELLER',
     },
   });
+
+  for (const category of categories) {
+    await prisma.installmentCategory.upsert({
+      where: { installmentCategory: `${category}` },
+      update: {},
+      create: {
+        installmentCategory: `${category}`,
+      },
+    });
+  }
 };
 
 main();

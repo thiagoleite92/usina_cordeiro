@@ -7,7 +7,7 @@ export const updateInstallment = async (
   rep: FastifyReply
 ) => {
   const updateInstallmentBodySchema = z.object({
-    installment: z.string().min(1, 'Campo obrigatório'),
+    installmentCategoryId: z.string().min(1, 'Campo obrigatório'),
     value: z.number(),
     description: z.string().nullable(),
     date: z.string(),
@@ -15,13 +15,13 @@ export const updateInstallment = async (
     type: z.enum(['INCOME', 'OUTCOME']),
   });
 
-  const { installment, value, description, date, id } =
+  const { installmentCategoryId, value, description, date, id } =
     updateInstallmentBodySchema.parse(req.body);
 
   const updateInstallmentUseCase = makeUpdateInstallmentService();
 
   await updateInstallmentUseCase.execute({
-    installment,
+    installmentCategoryId,
     value,
     description,
     date,

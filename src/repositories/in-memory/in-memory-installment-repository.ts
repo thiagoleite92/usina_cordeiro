@@ -2,21 +2,24 @@ import { SaveInstallmentDTO } from '../../services/dto/save-installment.dto';
 import { InstallmentRepositoryInterface } from '../interfaces/installment-repository-interface';
 import { Installment } from '@prisma/client';
 import { createId } from '@paralleldrive/cuid2';
-import { Decimal } from '@prisma/client/runtime/library';
-import { UpdateExpanseDTO } from '../../services/dto/update-installment.dto';
+import { UpdateInstallmentDTO } from '../../services/dto/update-installment.dto';
 
 export class InMemoryInstallmentRepository
   implements InstallmentRepositoryInterface
 {
   public items: Array<Installment> = [];
 
+  async findAllInstallments() {
+    return this.items;
+  }
+
   async update({
     id,
     date,
     description,
-    installment,
+    installmentCategoryId,
     value,
-  }: UpdateExpanseDTO) {
+  }: UpdateInstallmentDTO) {
     const foundInstallment = this.items.find((item) => item.id === id);
 
     if (!foundInstallment) {
@@ -27,12 +30,10 @@ export class InMemoryInstallmentRepository
     foundInstallment.description = description
       ? description
       : foundInstallment.description;
-    foundInstallment.installment = installment
-      ? installment
-      : foundInstallment.installment;
-    foundInstallment.value = value
-      ? new Decimal(value)
-      : foundInstallment.value;
+    foundInstallment.installmentCategoryId = installmentCategoryId
+      ? foundInstallment.installmentCategoryId
+      : foundInstallment.installmentCategoryId;
+    foundInstallment.value = value ? value : foundInstallment.value;
 
     return foundInstallment;
   }
@@ -40,13 +41,14 @@ export class InMemoryInstallmentRepository
   async save(data: SaveInstallmentDTO) {
     const installment: Installment = {
       id: createId(),
-      installment: data.installment,
+      installmentCategoryId: data.installmentCategoryId,
       date: data.date,
       description: data.description,
       createdAt: new Date(),
       updatedAt: new Date(),
       userId: data.userId,
-      value: new Decimal(data.value),
+      value: data.value,
+      type: data.type,
     };
 
     this.items.push(installment);

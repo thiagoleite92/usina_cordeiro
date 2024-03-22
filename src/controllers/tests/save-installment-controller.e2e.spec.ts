@@ -30,9 +30,9 @@ describe('e2e => Save Installment', () => {
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId,
-        value: 19.99,
+        value: 1999,
         type: 'INCOME',
       });
 
@@ -53,7 +53,7 @@ describe('e2e => Save Installment', () => {
         description: '',
         installment: 'Teste',
         userId,
-        value: 19.99,
+        value: 1999,
         type: 'INCOME',
       });
 

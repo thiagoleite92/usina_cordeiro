@@ -1,19 +1,21 @@
 import { Installment } from '@prisma/client';
 import { ResourceNotFoundError } from '../errors/ResourceNotFoundError';
 import { InstallmentRepositoryInterface } from '../repositories/interfaces/installment-repository-interface';
+import { InstallmentCategoriesInterface } from '../repositories/interfaces/installment-categories-interface';
 
 type updateInstallmentServiceRequest = {
-  installment: string;
+  installmentCategoryId: string;
   value: number;
   description: string | null;
-  date: Date;
+  date: string;
   userId: string;
   id: string;
 };
 
 export class UpdateInstallmentService {
   constructor(
-    private readonly installmentRepository: InstallmentRepositoryInterface
+    private readonly installmentRepository: InstallmentRepositoryInterface,
+    private readonly installmentCategoriesRepository: InstallmentCategoriesInterface
   ) {}
 
   async execute(
@@ -24,13 +26,18 @@ export class UpdateInstallmentService {
     );
 
     if (!installment) {
-      throw new ResourceNotFoundError('Despesa não encontrada');
+      throw new ResourceNotFoundError('Recurso não encontrada');
     }
+
+    const { id } = await this.installmentCategoriesRepository.findOrCreate(
+      updateInstallment.installmentCategoryId
+    );
 
     const update = {
       ...installment,
       ...updateInstallment,
       date: new Date(updateInstallment.date),
+      installmentCategoryId: id,
     };
 
     const result = await this.installmentRepository.update(update);

@@ -21,18 +21,27 @@ model User {
   @@map("users")
 }
 
-model Installment {
-  id          String          @id @default(cuid())
-  installment String
-  value       Int
-  description String?
-  date        DateTime
-  type        InstallmentEnum @default(INCOME)
-  createdAt   DateTime        @default(now()) @map("created_at")
-  updatedAt   DateTime        @updatedAt @map("updated_at")
-  userId      String?         @map("user_id")
+model InstallmentCategory {
+  id                  String        @id @default(cuid())
+  installmentCategory String        @unique @map("installment_category")
+  Installments        Installment[]
 
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  @@map("installment_categories")
+}
+
+model Installment {
+  id                    String          @id @default(cuid())
+  value                 Int
+  description           String?
+  date                  DateTime
+  type                  InstallmentEnum @default(INCOME)
+  createdAt             DateTime        @default(now()) @map("created_at")
+  updatedAt             DateTime        @updatedAt @map("updated_at")
+  userId                String?         @map("user_id")
+  installmentCategoryId String          @map("installment_category_id")
+
+  user                User?               @relation(fields: [userId], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  installmentCategory InstallmentCategory @relation(fields: [installmentCategoryId], references: [id])
 
   @@map("installments")
 }

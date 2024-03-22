@@ -18,15 +18,16 @@ describe('Service => Update Installment', () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',
-      installment: 'Serviço',
+      installmentCategoryId: 'Serviço',
       userId: createId(),
       value: 19.99,
+      type: InstallmentEnum.INCOME,
     };
 
     const newData = {
       date: new Date('01/01/2023'),
       description: 'atualizado',
-      installment: 'Despesa',
+      installmentCategoryId: 'Despesa',
       userId: createId(),
       value: 12.99,
       type: InstallmentEnum.INCOME,
@@ -41,23 +42,23 @@ describe('Service => Update Installment', () => {
     });
 
     expect(result?.description).toEqual(newData.description);
-    expect(result?.installment).toEqual(newData.installment);
-    expect(result?.value.toNumber()).toEqual(newData.value);
+    expect(result?.value).toEqual(newData.value);
   });
 
   it('should not be able to update an installment that was not found', async () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',
-      installment: 'Serviço',
+      installmentCategoryId: 'Serviço',
       userId: createId(),
       value: 19.99,
+      type: InstallmentEnum.OUTCOME,
     };
 
     const newData = {
       date: new Date('01/01/2023'),
       description: 'atualizado',
-      installment: 'Despesa',
+      installmentCategoryId: 'Despesa',
       userId: createId(),
       value: 12.99,
       type: InstallmentEnum.OUTCOME,

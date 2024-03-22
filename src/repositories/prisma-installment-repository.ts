@@ -40,10 +40,7 @@ export class PrismaInstallmentRepository
         createdAt: 'desc',
       },
       where: {
-        OR: [
-          { installment: { contains: search, mode: 'insensitive' } },
-          { description: { contains: search, mode: 'insensitive' } },
-        ],
+        OR: [{ description: { contains: search, mode: 'insensitive' } }],
       },
       take: perPage,
       skip: (page - 1) * perPage,
