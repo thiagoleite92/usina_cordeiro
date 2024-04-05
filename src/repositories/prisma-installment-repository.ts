@@ -32,18 +32,31 @@ export class PrismaInstallmentRepository
 
   async findAllInstallments({
     perPage = 10,
-    search,
     page = 1,
+    monthFilter,
   }: findAllInstallmentsRequest) {
     return prisma.installment.findMany({
       orderBy: {
-        createdAt: 'desc',
+        date: 'desc',
       },
       where: {
-        OR: [{ description: { contains: search, mode: 'insensitive' } }],
+        AND: [
+          { date: monthFilter ? { gte: new Date(monthFilter[0]) } : {} },
+          { date: monthFilter ? { lte: new Date(monthFilter[1]) } : {} },
+        ],
       },
       take: perPage,
       skip: (page - 1) * perPage,
+    });
+  }
+
+  async getAvailablePeriods() {
+    return prisma.installment.findMany({
+      orderBy: {
+        date: 'desc',
+      },
+      select: { date: true },
+      distinct: ['date'],
     });
   }
 }

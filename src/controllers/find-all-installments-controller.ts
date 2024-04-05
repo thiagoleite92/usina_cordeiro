@@ -8,21 +8,23 @@ export const findAllInstallments = async (
   rep: FastifyReply
 ): Promise<Installment> => {
   const findAllInstallmentsQuerySchema = z.object({
-    search: z.optional(z.string()),
     page: z.optional(z.coerce.number().default(1)),
     perPage: z.optional(z.coerce.number().default(10)),
+    'monthFilter[]': z.optional(z.array(z.string())),
   });
 
-  const { search, page, perPage } = findAllInstallmentsQuerySchema.parse(
-    req.query
-  );
+  const {
+    page,
+    perPage,
+    'monthFilter[]': monthFilter,
+  } = findAllInstallmentsQuerySchema.parse(req.query);
 
   const findallinstallmentsService = makeFindAllInstallments();
 
   const installments = await findallinstallmentsService.execute({
-    search,
     perPage,
     page,
+    monthFilter,
   });
 
   return rep.status(200).send({ installments });

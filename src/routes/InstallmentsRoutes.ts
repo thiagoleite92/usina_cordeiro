@@ -6,30 +6,21 @@ import { updateInstallment } from '../controllers/update-installment-controller'
 import { getInstallmentById } from '../controllers/get-installment-by-id-controller';
 import { deleteInstallment } from '../controllers/delete-installment-controller';
 import { findAllInstallments } from '../controllers/find-all-installments-controller';
+import { getInstallmentCategories } from '../controllers/get-installment-categories-controller';
+import { getInstallmentPeriodsAvailable } from '../controllers/get-installment-period-available-controller';
 
 export const installmentRoutes = async (app: FastifyInstance) => {
-  app.get('/installment', { preHandler: verifyJWT }, findAllInstallments);
+  app.addHook('onRequest', verifyJWT);
 
-  app.get(
-    '/installment/:installmentId',
-    { preHandler: verifyJWT },
-    getInstallmentById
-  );
+  app.get('/installment', findAllInstallments);
+  app.get('/installment/periods-available', getInstallmentPeriodsAvailable);
 
-  app.post(
-    '/installment',
-    { preHandler: [verifyJWT, verifyUserRole('ADMIN')] },
-    saveInstallment
-  );
-  app.put(
-    '/installment',
-    { preHandler: [verifyJWT, verifyUserRole('ADMIN')] },
-    updateInstallment
-  );
+  app.addHook('onRequest', verifyUserRole('ADMIN'));
+  app.get('/installment/categories', getInstallmentCategories);
+  app.get('/installment/:installmentId', getInstallmentById);
 
-  app.delete(
-    '/installment/:installmentId',
-    { preHandler: [verifyJWT, verifyUserRole('ADMIN')] },
-    deleteInstallment
-  );
+  app.post('/installment', saveInstallment);
+  app.put('/installment/:installmentId', updateInstallment);
+
+  app.delete('/installment/:installmentId', deleteInstallment);
 };

@@ -4,6 +4,9 @@ import { InstallmentCategoriesInterface } from './interfaces/installment-categor
 export class PrismaInstallmentCategoriesRepository
   implements InstallmentCategoriesInterface
 {
+  getAllCategories(): Promise<{ id: string; installmentCategory: string }[]> {
+    return prisma.installmentCategory.findMany();
+  }
   async findOrCreate(category: string) {
     const installmentCategory = await prisma.installmentCategory.findFirst({
       where: { OR: [{ installmentCategory: category }, { id: category }] },

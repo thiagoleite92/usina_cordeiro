@@ -2,9 +2,9 @@ import { Installment } from '@prisma/client';
 import { InstallmentRepositoryInterface } from '../repositories/interfaces/installment-repository-interface';
 
 export type findAllInstallmentsRequest = {
-  search?: string;
   perPage?: number;
   page?: number;
+  monthFilter?: string[];
 };
 
 export class FindAllInstallmentsService {
@@ -13,14 +13,14 @@ export class FindAllInstallmentsService {
   ) {}
 
   async execute({
-    search,
     perPage,
     page,
+    monthFilter,
   }: findAllInstallmentsRequest): Promise<Installment[]> {
     const installments = await this.installmentsRepository.findAllInstallments({
-      search,
       perPage,
       page,
+      monthFilter,
     });
 
     return installments;
