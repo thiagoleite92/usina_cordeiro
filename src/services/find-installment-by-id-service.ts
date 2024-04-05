@@ -11,7 +11,6 @@ export class FindInstallmentByIdService {
     const installment = await this.installmentRepository.findById(id);
 
     if (!installment) {
-      console.log('oi');
       throw new ResourceNotFoundError('Despesa não encontrada');
     }
 

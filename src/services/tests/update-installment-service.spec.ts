@@ -4,14 +4,21 @@ import { createId } from '@paralleldrive/cuid2';
 import { ResourceNotFoundError } from '../../errors/ResourceNotFoundError';
 import { UpdateInstallmentService } from '../update-installment-service';
 import { InstallmentEnum } from '@prisma/client';
+import { InMemoryInstallmentCategoriesRepository } from '../../repositories/in-memory/in-memory-installment-category-repository';
 
 let installmentRepository: InMemoryInstallmentRepository;
+let installmentCategoriesRepository: InMemoryInstallmentCategoriesRepository;
 let sut: UpdateInstallmentService;
 
 describe('Service => Update Installment', () => {
   beforeEach(() => {
     installmentRepository = new InMemoryInstallmentRepository();
-    sut = new UpdateInstallmentService(installmentRepository);
+    installmentCategoriesRepository =
+      new InMemoryInstallmentCategoriesRepository();
+    sut = new UpdateInstallmentService(
+      installmentRepository,
+      installmentCategoriesRepository
+    );
   });
 
   it('should be able to update an installment', async () => {

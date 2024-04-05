@@ -75,4 +75,8 @@ export class InMemoryInstallmentRepository
   async getItems() {
     return this.items;
   }
+
+  async getAvailablePeriods(): Promise<{ date: Date }[]> {
+    throw new Error('Method not implemented.');
+  }
 }

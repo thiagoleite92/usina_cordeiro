@@ -21,4 +21,10 @@ export class InMemoryInstallmentCategoriesRepository
 
     return data;
   }
+
+  async getAllCategories(): Promise<
+    { id: string; installmentCategory: string }[]
+  > {
+    return this.items;
+  }
 }

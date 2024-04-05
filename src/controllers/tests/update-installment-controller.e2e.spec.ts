@@ -43,7 +43,7 @@ describe('e2e => Update Installment', () => {
     expect(createdInstallment).toHaveLength(1);
 
     const response = await request(app.server)
-      .put('/api/installment')
+      .put('/api/installment/' + createdInstallment[0]?.id)
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/02/2023',
@@ -52,7 +52,6 @@ describe('e2e => Update Installment', () => {
         userId,
         value: 1299,
         type: 'INCOME',
-        id: createdInstallment[0]?.id,
       });
 
     expect(response.statusCode).toEqual(202);
@@ -67,7 +66,7 @@ describe('e2e => Update Installment', () => {
     const admin = await createAndAuthenticateAdmin(app, true);
     const dweller = await createAndAuthenticateDweller(app, false);
 
-    await request(app.server)
+    const created = await request(app.server)
       .post('/api/installment')
       .set('Authorization', 'Bearer ' + admin.access_token)
       .send({
@@ -80,7 +79,7 @@ describe('e2e => Update Installment', () => {
       });
 
     const response = await request(app.server)
-      .put('/api/installment')
+      .put('/api/installment/' + created.body?.installment?.id)
       .set('Authorization', 'Bearer ' + dweller.access_token)
       .send({
         date: '01/01/2023',
