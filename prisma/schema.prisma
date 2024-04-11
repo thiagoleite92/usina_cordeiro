@@ -17,6 +17,8 @@ model User {
   password     String
   role         UserRole      @default(DWELLER)
   Installments Installment[]
+  residence    String[]
+  isActive     Boolean       @default(false)
 
   @@map("users")
 }

@@ -8,6 +8,8 @@ import { UnauthorizedError } from '../errors/UnauthorizedError';
 import { authRoute } from '../routes/AuthRoute';
 import { userRoutes } from '../routes/UserRoutes';
 import { installmentRoutes } from '../routes/InstallmentsRoutes';
+import { EmailConflictError } from '../errors/EmailConflict';
+import { InvalidCredentialsError } from '../errors/InvalidCredentialsError';
 
 export const app = fastify();
 
@@ -40,6 +42,14 @@ app.setErrorHandler((error, _, reply) => {
 
   if (error instanceof UnauthorizedError) {
     return reply.status(401).send({ message: error.message });
+  }
+
+  if (error instanceof EmailConflictError) {
+    return reply.status(409).send({ message: error.message });
+  }
+
+  if (error instanceof InvalidCredentialsError) {
+    return reply.status(400).send({ message: error.message });
   }
 
   return reply.status(500).send({ message: 'Internal Server Error' });

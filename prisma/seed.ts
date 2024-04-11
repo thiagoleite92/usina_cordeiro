@@ -23,6 +23,7 @@ const main = async () => {
       password: await bcrypt.hash('Senha@123', 8),
       name: 'Thiago Leite',
       role: 'ADMIN',
+      isActive: true,
     },
   });
 
@@ -34,6 +35,7 @@ const main = async () => {
       password: await bcrypt.hash('Senha@123', 8),
       name: 'Thiago Leite residente',
       role: 'DWELLER',
+      isActive: true,
     },
   });
 
