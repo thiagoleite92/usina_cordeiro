@@ -14,13 +14,26 @@ export const installmentRoutes = async (app: FastifyInstance) => {
 
   app.get('/installment', findAllInstallments);
   app.get('/installment/periods-available', getInstallmentPeriodsAvailable);
-
-  app.addHook('onRequest', verifyUserRole('ADMIN'));
   app.get('/installment/categories', getInstallmentCategories);
-  app.get('/installment/:installmentId', getInstallmentById);
 
-  app.post('/installment', saveInstallment);
-  app.put('/installment/:installmentId', updateInstallment);
-
-  app.delete('/installment/:installmentId', deleteInstallment);
+  app.get(
+    '/installment/:installmentId',
+    { preHandler: verifyUserRole('ADMIN') },
+    getInstallmentById
+  );
+  app.post(
+    '/installment',
+    { preHandler: verifyUserRole('ADMIN') },
+    saveInstallment
+  );
+  app.put(
+    '/installment/:installmentId',
+    { preHandler: verifyUserRole('ADMIN') },
+    updateInstallment
+  );
+  app.delete(
+    '/installment/:installmentId',
+    { preHandler: verifyUserRole('ADMIN') },
+    deleteInstallment
+  );
 };

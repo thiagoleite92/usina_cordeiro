@@ -5,7 +5,7 @@ import { makeAuthenticateService } from '../services/factories/make-authenticate
 export const authenticate = async (req: FastifyRequest, rep: FastifyReply) => {
   const authenticateBodySchema = z.object({
     email: z.string(),
-    password: z.string().min(6),
+    password: z.string(),
   });
 
   const { email, password } = authenticateBodySchema.parse(req?.body);
