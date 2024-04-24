@@ -27,6 +27,15 @@ export class PrismaUsersRepository implements UsersRepositoryInterface {
   }
 
   async getAllUsers() {
-    return await prisma.user.findMany();
+    return await prisma.user.findMany({
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  async updateStatus(residentId: string, currentStatus: boolean) {
+    await prisma.user.update({
+      where: { id: residentId },
+      data: { isActive: !currentStatus },
+    });
   }
 }

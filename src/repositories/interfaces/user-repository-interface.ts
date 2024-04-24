@@ -6,4 +6,5 @@ export interface UsersRepositoryInterface {
   findById(id: string): Promise<User | null>;
   register(user: RegisterUserDto): Promise<User>;
   getAllUsers(): Promise<User[]>;
+  updateStatus(residentId: string, currentStatus: boolean): Promise<void>;
 }
