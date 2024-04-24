@@ -25,4 +25,8 @@ export class PrismaUsersRepository implements UsersRepositoryInterface {
       },
     });
   }
+
+  async getAllUsers() {
+    return await prisma.user.findMany();
+  }
 }
