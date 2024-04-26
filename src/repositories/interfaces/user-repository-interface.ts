@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { RegisterUserDto } from '../../services/dto/register-user.dto';
 
 export interface UsersRepositoryInterface {
@@ -7,4 +7,5 @@ export interface UsersRepositoryInterface {
   register(user: RegisterUserDto): Promise<User>;
   getAllUsers(): Promise<User[]>;
   updateStatus(residentId: string, currentStatus: boolean): Promise<void>;
+  updateRole(residentId: string, currentRole: UserRole): Promise<void>;
 }

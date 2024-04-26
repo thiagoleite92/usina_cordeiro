@@ -1,6 +1,7 @@
 import { UsersRepositoryInterface } from './interfaces/user-repository-interface';
 import { prisma } from '../lib/prisma';
 import { RegisterUserDto } from '../services/dto/register-user.dto';
+import { $Enums } from '@prisma/client';
 
 export class PrismaUsersRepository implements UsersRepositoryInterface {
   async findByEmail(email: string) {
@@ -36,6 +37,13 @@ export class PrismaUsersRepository implements UsersRepositoryInterface {
     await prisma.user.update({
       where: { id: residentId },
       data: { isActive: !currentStatus },
+    });
+  }
+
+  async updateRole(residentId: string, newRole: $Enums.UserRole) {
+    await prisma.user.update({
+      where: { id: residentId },
+      data: { role: newRole },
     });
   }
 }
