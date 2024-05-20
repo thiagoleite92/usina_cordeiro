@@ -18,7 +18,7 @@ model User {
   role         UserRole      @default(DWELLER)
   Installments Installment[]
   residence    String[]
-  isActive     Boolean       @default(false)
+  isActive     Boolean       @default(false) @map("is_active")
 
   @@map("users")
 }
