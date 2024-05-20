@@ -22,7 +22,7 @@
     "db:migrate:dev": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "build:server": "npm install && npm run build && npx prisma migrate deploy && npx prisma db seed"
+    "build:server": "npm install && npm run build && npx prisma migrate deploy && npx prisma generate npx prisma db seed"
   },
   "keywords": [],
   "author": "",
