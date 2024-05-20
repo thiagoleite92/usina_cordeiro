@@ -25,9 +25,9 @@ describe('e2e => Get Installment By Id', () => {
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId,
-        value: 19.99,
+        value: 1999,
         type: 'INCOME',
       });
 
@@ -43,9 +43,9 @@ describe('e2e => Get Installment By Id', () => {
     expect(response.body.installment).toBeDefined();
     expect(response.body).toEqual({
       installment: expect.objectContaining({
-        installment: 'Serviço',
+        installmentCategoryId: expect.any(String),
         date: new Date('01/01/2023').toISOString(),
-        value: '19.99',
+        value: 1999,
       }),
     });
   });

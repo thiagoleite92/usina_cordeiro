@@ -55,6 +55,8 @@ describe('e2e => authenticate', () => {
       id: expect.any(String),
       role: 'ADMIN',
       name: 'Thiago Leite',
+      isActive: false,
+      residence: [],
     });
   });
 });

@@ -9,21 +9,22 @@ export const saveInstallment = async (
   const saveInstallmentBodySchema = z.object({
     description: z.string().nullable(),
     value: z.number(),
-    installment: z.string().min(1, 'Campo obrigatório'),
+    installmentCategoryId: z.string().min(1, 'Campo obrigatório'),
     date: z.string(),
     type: z.enum(['INCOME', 'OUTCOME']),
   });
 
-  const { installment, value, description, date } =
+  const { installmentCategoryId, value, description, date, type } =
     saveInstallmentBodySchema.parse(req.body);
 
   const saveInstallmentUseCase = makeSaveInstallmentService();
 
   const result = await saveInstallmentUseCase.execute({
-    installment,
+    installmentCategoryId,
     value,
     description,
     date,
+    type,
     userId: req?.user?.sub,
   });
 

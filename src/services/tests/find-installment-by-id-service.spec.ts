@@ -4,6 +4,7 @@ import { InstallmentRepositoryInterface } from '../../repositories/interfaces/in
 import { createId } from '@paralleldrive/cuid2';
 import { ResourceNotFoundError } from '../../errors/ResourceNotFoundError';
 import { FindInstallmentByIdService } from '../find-installment-by-id-service';
+import { InstallmentEnum } from '@prisma/client';
 
 let installmentRepository: InstallmentRepositoryInterface;
 let sut: FindInstallmentByIdService;
@@ -18,17 +19,22 @@ describe('Service => Find Installment by Id', () => {
     const data = {
       date: new Date('01/01/2023'),
       description: '',
-      installment: 'Serviço',
+      installmentCategoryId: 'Serviço',
       userId: createId(),
       value: 19.99,
+      type: InstallmentEnum.INCOME,
     };
 
     const { id } = await installmentRepository.save(data);
 
-    const { installment, value, id: installmentId } = await sut.execute(id);
+    const {
+      installmentCategoryId,
+      value,
+      id: installmentId,
+    } = await sut.execute(id);
 
-    expect(installment).toEqual(data.installment);
-    expect(value.toNumber()).toEqual(data.value);
+    expect(installmentCategoryId).toEqual(data.installmentCategoryId);
+    expect(value).toEqual(data.value);
     expect(installmentId).toEqual(id);
   });
 

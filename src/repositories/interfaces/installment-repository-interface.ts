@@ -12,4 +12,5 @@ export interface InstallmentRepositoryInterface {
   findAllInstallments(
     query?: findAllInstallmentsRequest
   ): Promise<Installment[]>;
+  getAvailablePeriods(): Promise<{ date: Date }[]>;
 }

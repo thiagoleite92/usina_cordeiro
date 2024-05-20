@@ -33,34 +33,32 @@ describe('e2e => Update Installment', () => {
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId,
+        value: 1999,
         type: 'INCOME',
-        value: 19.99,
       });
 
     const createdInstallment = await prisma.installment.findMany();
     expect(createdInstallment).toHaveLength(1);
 
     const response = await request(app.server)
-      .put('/api/installment')
+      .put('/api/installment/' + createdInstallment[0]?.id)
       .set('Authorization', 'Bearer ' + access_token)
       .send({
         date: '01/02/2023',
         description: 'Agora com descrição',
-        installment: 'Atualizado',
+        installmentCategoryId: 'Serviço',
         userId,
-        value: 12.99,
+        value: 1299,
         type: 'INCOME',
-        id: createdInstallment[0]?.id,
       });
 
     expect(response.statusCode).toEqual(202);
 
     const updatedInstallment = await prisma.installment.findMany();
     expect(updatedInstallment[0].description).toEqual('Agora com descrição');
-    expect(updatedInstallment[0].value.toNumber()).toEqual(12.99);
-    expect(updatedInstallment[0].installment).toEqual('Atualizado');
+    expect(updatedInstallment[0].value).toEqual(1299);
     expect(updatedInstallment).toHaveLength(1);
   });
 
@@ -68,25 +66,25 @@ describe('e2e => Update Installment', () => {
     const admin = await createAndAuthenticateAdmin(app, true);
     const dweller = await createAndAuthenticateDweller(app, false);
 
-    await request(app.server)
+    const created = await request(app.server)
       .post('/api/installment')
       .set('Authorization', 'Bearer ' + admin.access_token)
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId: admin.userId,
         value: 19.99,
         type: 'INCOME',
       });
 
     const response = await request(app.server)
-      .put('/api/installment')
+      .put('/api/installment/' + created.body?.installment?.id)
       .set('Authorization', 'Bearer ' + dweller.access_token)
       .send({
         date: '01/01/2023',
         description: 'Atualizado',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId: dweller.userId,
         type: 'OUTCOME',
         value: 12.99,

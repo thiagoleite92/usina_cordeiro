@@ -32,9 +32,9 @@ describe('e2e => Delete Installment Controller', async () => {
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId,
-        value: 19.99,
+        value: 1999,
         type: 'INCOME',
       });
 
@@ -66,9 +66,9 @@ describe('e2e => Delete Installment Controller', async () => {
       .send({
         date: '01/01/2023',
         description: '',
-        installment: 'Serviço',
+        installmentCategoryId: 'Serviço',
         userId: adminId,
-        value: 19.99,
+        value: 1999,
         type: 'INCOME',
       });
 

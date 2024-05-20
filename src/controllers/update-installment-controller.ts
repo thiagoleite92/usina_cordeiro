@@ -1,32 +1,34 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { makeUpdateInstallmentService } from '../services/factories/make-update-installment-service';
+import { getInstallmentIdParamSchema } from './delete-installment-controller';
 
 export const updateInstallment = async (
   req: FastifyRequest,
   rep: FastifyReply
 ) => {
+  const { installmentId } = getInstallmentIdParamSchema.parse(req.params);
+
   const updateInstallmentBodySchema = z.object({
-    installment: z.string().min(1, 'Campo obrigatório'),
+    installmentCategoryId: z.string().min(1, 'Campo obrigatório'),
     value: z.number(),
     description: z.string().nullable(),
     date: z.string(),
-    id: z.string(),
     type: z.enum(['INCOME', 'OUTCOME']),
   });
 
-  const { installment, value, description, date, id } =
+  const { installmentCategoryId, value, description, date } =
     updateInstallmentBodySchema.parse(req.body);
 
   const updateInstallmentUseCase = makeUpdateInstallmentService();
 
   await updateInstallmentUseCase.execute({
-    installment,
+    installmentCategoryId,
     value,
     description,
     date,
     userId: req?.user?.sub,
-    id,
+    id: installmentId,
   });
 
   return rep.status(202).send({ message: 'ok' });

@@ -30,8 +30,33 @@ export class PrismaInstallmentRepository
     return prisma.installment.findMany();
   }
 
-  async findAllInstallments(query?: findAllInstallmentsRequest) {
-    console.log(query);
-    return prisma.installment.findMany({});
+  async findAllInstallments({
+    perPage = 10,
+    page = 1,
+    monthFilter,
+  }: findAllInstallmentsRequest) {
+    return prisma.installment.findMany({
+      orderBy: {
+        date: 'desc',
+      },
+      where: {
+        AND: [
+          { date: monthFilter ? { gte: new Date(monthFilter[0]) } : {} },
+          { date: monthFilter ? { lte: new Date(monthFilter[1]) } : {} },
+        ],
+      },
+      take: perPage,
+      skip: (page - 1) * perPage,
+    });
+  }
+
+  async getAvailablePeriods() {
+    return prisma.installment.findMany({
+      orderBy: {
+        date: 'desc',
+      },
+      select: { date: true },
+      distinct: ['date'],
+    });
   }
 }
